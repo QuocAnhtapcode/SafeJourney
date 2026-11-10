@@ -1,0 +1,13 @@
+# Local development: backend, tests, simulator and load harness.
+# Create from the repository root: conda env create -f environment.yml
+# Keep application versions in the existing requirements files, shared with Docker.
+name: safejourney
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - "-r load_tests/requirements.txt"
+      - "-r research_benchmarks/requirements.txt"

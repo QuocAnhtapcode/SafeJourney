@@ -1,0 +1,32 @@
+name: safejourney-loadtest
+services:
+  db:
+    image: postgis/postgis:16-3.6
+    environment:
+      POSTGRES_USER: loadtest
+      POSTGRES_PASSWORD: local_loadtest_only
+      POSTGRES_DB: safejourney_loadtest
+    ports:
+      - "127.0.0.1:25432:5432"
+    volumes:
+      - loadtest_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loadtest -d safejourney_loadtest"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  redis:
+    image: redis:7.4
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "127.0.0.1:26379:6379"
+    volumes:
+      - loadtest_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+volumes:
+  loadtest_db:
+  loadtest_redis:

@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgis/postgis:16-3.6
+    environment:
+      POSTGRES_USER: journey
+      POSTGRES_PASSWORD: journey_local_change_me
+      POSTGRES_DB: journey
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - journey_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U journey -d journey"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  redis:
+    image: redis:7.4
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    volumes:
+      - journey_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  journey_db:
+  journey_redis:

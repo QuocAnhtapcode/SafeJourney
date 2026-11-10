@@ -1,0 +1,17 @@
+.git
+.venv
+**/__pycache__
+**/.pytest_cache
+**/node_modules
+**/dist
+**/.env
+*.log
+.work
+load_tests
+docs
+tests
+backend/tests
+research_benchmarks
+frontend/tests
+**/.env.*
+!**/.env.example
